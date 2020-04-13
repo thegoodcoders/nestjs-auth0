@@ -9,13 +9,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
+const items_service_1 = require("./items/items.service");
+const items_controller_1 = require("./items/items.controller");
+const authz_module_1 = require("./authz/authz.module");
+const config_1 = require("@nestjs/config");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     common_1.Module({
-        imports: [],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        imports: [authz_module_1.AuthzModule, config_1.ConfigModule.forRoot({
+                envFilePath: `env/${process.env.NODE_ENV || 'development'}.env`
+            })],
+        controllers: [app_controller_1.AppController, items_controller_1.ItemsController],
+        providers: [app_service_1.AppService, items_service_1.ItemsService],
     })
 ], AppModule);
 exports.AppModule = AppModule;
